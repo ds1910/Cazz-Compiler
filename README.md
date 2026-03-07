@@ -1,203 +1,253 @@
-# 🔥 Cazz-Compiler
+# Cazz Compiler - Lexical Analyzer
 
-A comprehensive lexical analyzer (lexer) for a C-like programming language, built using Flex and C++. This project implements the first phase of a compiler: tokenization.
+A simple and efficient lexical analyzer (lexer) for the Cazz programming language. This project is part of a compiler design assignment that breaks down source code into meaningful tokens.
 
-## 📋 Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Token Types](#token-types)
-- [Examples](#examples)
-- [License](#license)
+## 👥 Project Team
 
-## 🎯 Overview
+**Created by:**
+- Dinesh Sharma
+- Mohammad Zafar
+- Satish Kumar Singh
 
-CazzLexer is a lexical analyzer that reads source code and breaks it down into meaningful tokens. It follows the **longest match rule** - when multiple patterns match, it selects the longest one. This lexer recognizes all standard C language constructs including keywords, operators, literals, identifiers, and comments.
+## 📚 What is a Lexical Analyzer?
+
+A lexical analyzer, or lexer for short, is the first component of any compiler. Think of it as a reader that scans through your code character by character and groups them into meaningful chunks called "tokens."
+
+### Simple Example
+When you write: `int x = 10;`
+
+The lexer breaks it down into:
+- `int` → Keyword (data type)
+- `x` → Identifier (variable name)  
+- `=` → Assignment operator
+- `10` → Integer literal (number)
+- `;` → Punctuation (end of statement)
+
+This is similar to how you read English - you don't process individual letters, but rather words and punctuation marks. The lexer does the same for programming languages.
+
+## 🎯 Project Overview
+
+This lexer is designed for the **Cazz language**, a simplified programming language that includes:
+- Basic data types (int, real, char, bool)
+- Control structures (if, else, while, for)
+- Arithmetic and comparison operators
+- A clean and minimal syntax
+
+The goal is to make compiler concepts easy to understand while keeping the implementation simple and functional.
 
 ## ✨ Features
 
-### **Keywords** (34 total)
-- **Control Flow**: `if`, `else`, `while`, `for`, `do`, `switch`, `case`, `default`, `break`, `continue`, `return`
-- **Data Types**: `int`, `float`, `char`, `double`, `long`, `short`, `void`, `bool`, `signed`, `unsigned`
-- **Type Modifiers**: `const`, `static`
-- **Advanced**: `struct`, `enum`, `typedef`, `sizeof`
-- **Boolean Literals**: `true`, `false`
-- **I/O**: `read`, `print`
+### Keywords Recognized
+Our lexer understands these **9 keywords**:
+- `if`, `else` - For conditional statements
+- `while`, `for` - For loops
+- `main` - Program entry point
+- `int`, `real`, `char`, `bool` - Data types
+- `true`, `false` - Boolean values
 
-### **Operators**
-- **Arithmetic**: `+`, `-`, `*`, `/`, `%`, `++`, `--`
-- **Comparison**: `==`, `!=`, `<`, `>`, `<=`, `>=`
-- **Logical**: `&&`, `||`, `!`
-- **Bitwise**: `&`, `|`, `^`, `~`, `<<`, `>>`
-- **Assignment**: `=`, `+=`, `-=`, `*=`, `/=`, `%=`
+### Operators Supported
+**Arithmetic Operators:**
+- `+` (addition), `-` (subtraction), `*` (multiplication)
+- `/` (division), `%` (modulo/remainder)
 
-### **Literals**
-- **Integer**: `123`, `0`, `-456`
-- **Long**: `1000L`, `1000l`
-- **Long Long**: `999999LL`, `999999ll`
-- **Float**: `3.14f`, `2.5F`
-- **Double**: `3.14159`, `2.718d`, `2.718D`
-- **String**: `"Hello World"`, `"C++ Compiler"`
-- **Character**: `'a'`, `'Z'`, `'\n'`
+**Comparison Operators:**
+- `==` (equal to), `!=` (not equal to)
+- `<` (less than), `>` (greater than)
+- `<=` (less than or equal), `>=` (greater than or equal)
 
-### **Delimiters & Symbols**
-- **Punctuation**: `;`, `,`, `.`
-- **Parentheses**: `(`, `)`
-- **Braces**: `{`, `}`
-- **Brackets**: `[`, `]`
+**Assignment:**
+- `=` (assign value)
 
-### **Comments**
-- **Single-line**: `// comment`
-- **Multi-line**: `/* comment */`
+### Literals (Values)
+- **Integers**: `10`, `255`, `0`
+- **Real numbers**: `3.14`, `2.718`, `0.5`
+- **Characters**: `'a'`, `'Z'`, `'1'`
+- **Booleans**: `true`, `false`
 
-### **Identifiers**
-- Variable names, function names: `[a-zA-Z_][a-zA-Z0-9_]*`
+### Delimiters
+- `;` (semicolon - ends statements)
+- `,` (comma - separates items)
+- `( )` (parentheses - for conditions and function calls)
+- `{ }` (braces - code blocks)
 
-## 📁 Project Structure
+### Identifiers
+Variable names and function names that start with a letter or underscore, followed by letters, digits, or underscores. Examples: `x`, `sum`, `total_count`, `_temp`
+
+## 🏗️ Project Structure
 
 ```
 Cazz-Compiler/
-├── LICENSE                 # MIT License
-├── README.md              # This file
+├── README.md           # This file - project documentation
+├── lexer.exe          # Compiled lexer program (ready to run)
 └── Lexer/
-    ├── flex.l             # Flex lexer specification (CazzLexer)
-    ├── tokens.h           # Token type definitions
-    └── test.c             # Sample test file
+    ├── test.cz        # Sample Cazz program for testing
+    ├── tokens.h       # Token definitions (reference)
+    └── flex.l         # Lexer specification file
 ```
 
-## 🛠️ Requirements
+## 🔬 How It Works - The Theory
 
-### Software Dependencies
-- **Flex**: Version 2.6.4 or higher
-- **G++/GCC**: Version 6.3.0 or higher (MinGW on Windows)
-- **Bison** (optional): For future parser development
+### Phase 1: Character Reading
+The lexer reads your source code one character at a time, like reading a book letter by letter.
 
-### Platforms Supported
-- Windows (MinGW/MSYS2)
-- Linux
-- macOS
+### Phase 2: Pattern Matching
+It uses **regular expressions** to identify patterns:
+- If it sees digits like `123`, it knows it's a number
+- If it sees letters like `abc`, it checks if it's a keyword or identifier
+- If it sees `==`, it knows it's a comparison operator
 
-## 📦 Installation
+### Phase 3: Token Generation
+Once a pattern is matched, the lexer creates a token with:
+- **Type**: Is it a keyword, operator, or number?
+- **Value**: What's the actual text? (for identifiers and literals)
+- **Line number**: Where did we find it? (for error reporting)
 
-### On Windows (MSYS2/MinGW64)
+### Phase 4: Output
+The lexer outputs all tokens in a format that the next phase of the compiler (the parser) can understand.
 
-1. **Install MSYS2** (if not already installed)
-   ```bash
-   # Download from https://www.msys2.org/
-   ```
-
-2. **Install Flex, GCC, and Bison**
-   ```bash
-   pacman -S flex gcc bison
-   ```
-
-3. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/Cazz-Compiler.git
-   cd Cazz-Compiler/Lexer
-   ```
-
-### On Linux/macOS
-
-```bash
-# Ubuntu/Debian
-sudo apt-get install flex g++ bison
-
-# macOS
-brew install flex gcc bison
-
-# Clone repository
-git clone https://github.com/yourusername/Cazz-Compiler.git
-cd Cazz-Compiler/Lexer
+### Example Flow
 ```
+Input: int x = 5;
 
-## 🚀 Usage
-
-### Building the Lexer
-
-```bash
-cd Cazz-Compiler/Lexer
-
-# Generate C++ code from flex specification
-flex -o lex.yy.cpp flex.l
-
-# Compile the generated code
-g++ lex.yy.cpp -o lexer.exe
-
-# On Linux/macOS, omit .exe extension
-g++ lex.yy.cpp -o lexer
-```
-
-### Running the Lexer
-
-#### Option 1: Read from file
-```bash
-./lexer.exe < test.c
-# or
-./lexer < test.c  # Linux/macOS
-```
-
-#### Option 2: Interactive mode
-```bash
-./lexer.exe
-
-# Type code interactively, then:
-# - Windows: Press Ctrl+Z then Enter
-# - Linux/macOS: Press Ctrl+D
-```
-
-#### Option 3: Pipe input
-```bash
-echo "int x = 10;" | ./lexer.exe
-```
-
-## 🎨 Token Types
-
-The lexer outputs tokens in the following format:
-
-```
-TOKEN_NAME: value  (for identifiers and literals)
-TOKEN_NAME         (for keywords, operators, symbols)
-```
-
-### Example Output
-Input:
-```c
-int x = 10;
-```
+Step 1: Read 'i', 'n', 't' → Recognize keyword "int"
+Step 2: Read space → Ignore
+Step 3: Read 'x' → Recognize identifier "x"
+Step 4: Read '=' → Recognize assignment operator
+Step 5: Read '5' → Recognize integer literal "5"
+Step 6: Read ';' → Recognize semicolon
 
 Output:
-```
-INT
-IDENTIFIER: x
-ASSIGN
-INT_LITERAL: 10
-SEMICOLON
+[Line:1] KEYWORD: int
+[Line:1] IDENTIFIER: x
+[Line:1] ASSIGNMENT_OPERATOR: =
+[Line:1] INTEGER: 5
+[Line:1] PUNCTUATION: ;
 ```
 
-## 📝 Examples
+## 🚀 How to Run
 
-### Example 1: Simple Program
+### For Windows Users (MINGW64 Terminal)
+
+1. **Navigate to the project folder:**
+```bash
+cd /c/Users/YourName/Desktop/compiler/Cazz-Compiler
+```
+
+2. **Run the lexer with the test file:**
+```bash
+./lexer.exe < Lexer/test.cz
+```
+
+3. **Or create your own Cazz file and test it:**
+```bash
+./lexer.exe < your_program.cz
+```
+
+### Understanding the Output
+
+When you run the lexer, you'll see output like:
+```
+[Line:1] KEYWORD: int
+[Line:1] KEYWORD: main
+[Line:1] OPEN_BRACE: (
+[Line:1] CLOSE_BRACE: )
+[Line:1] OPEN_BRACE: {
+[Line:2] KEYWORD: int
+[Line:2] IDENTIFIER: x
+[Line:2] ASSIGNMENT_OPERATOR: =
+[Line:2] INTEGER: 10
+[Line:2] PUNCTUATION: ;
+...
+```
+
+Each line shows:
+- **Line number**: Where the token appears in your code
+- **Token type**: What kind of token it is
+- **Value**: The actual text (for identifiers and literals)
+
+## 📝 Sample Cazz Program
+
+Here's a simple program you can test (saved in `Lexer/test.cz`):
+
 ```c
-// test.c
 int main() {
     int x = 10;
-    float pi = 3.14f;
-    char* msg = "Hello";
+    real pi = 3.14;
+    char ch = 'A';
+    bool flag = true;
     
-    if (x >= 5 && x <= 20) {
-        x = x + 1;
-        x++;
+    if (x < 20) {
+        x = x + 5;
     }
     
-    for (int i = 0; i < 10; i++) {
-        print(i);
+    while (x > 0) {
+        x = x - 1;
     }
-    return 0;
 }
+```
+
+## 🧪 Testing Your Own Code
+
+You can create a new `.cz` file with your own Cazz code and test it:
+
+1. Create a file (e.g., `mycode.cz`)
+2. Write some Cazz code using the supported keywords and operators
+3. Run: `./lexer.exe < mycode.cz`
+4. Check the token output!
+
+## 📖 Assignment Learning Objectives
+
+Through this project, we learned:
+
+1. **Compiler Basics**: Understanding how compilers work from the ground up
+2. **Pattern Recognition**: Using regular expressions to identify code patterns
+3. **Token Design**: Deciding what information a token should carry
+4. **Error Handling**: Recognizing invalid characters and reporting errors
+5. **Language Design**: Making choices about what features a language should have
+6. **C Programming**: Building a practical tool using C
+7. **Testing**: Creating test cases to verify the lexer works correctly
+
+## 🎓 Key Concepts Explained
+
+### What is a Token?
+A token is the smallest meaningful unit in a programming language. Just like words in English, tokens are the building blocks of code.
+
+### Why Keep It Simple?
+We deliberately kept the Cazz language simple to focus on understanding the core concepts without getting overwhelmed. Real compilers (like GCC or Clang) handle hundreds of keywords and complex rules, but the fundamental principles are the same.
+
+### The Longest Match Rule
+When the lexer can match multiple patterns, it always chooses the longest one. For example, when it sees `>=`, it recognizes it as one "greater than or equal" operator rather than `>` followed by `=`.
+
+### Whitespace and Comments  
+The lexer ignores spaces, tabs, and newlines (except for counting line numbers). This is why you can write code with any spacing style you like!
+
+## 🔧 Technical Details
+
+**Language**: C  
+**Implementation**: Hand-written lexical analyzer  
+**Input**: Source code files (.cz extension)  
+**Output**: Sequence of tokens with line numbers  
+**Token Format**: `[Line:N] TYPE: value`
+
+## 🎯 Future Enhancements
+
+This lexer is just the beginning. Future phases could include:
+1. **Parser**: Build a syntax tree from the tokens
+2. **Semantic Analyzer**: Check for logical errors (like using undeclared variables)
+3. **Code Generator**: Produce executable machine code
+4. **Optimization**: Make the generated code run faster
+
+## 💡 Conclusion
+
+Building a lexer from scratch gives you a deep appreciation for how programming languages work. Every time you write code and hit "run," a lexer just like this one is breaking down your code into tokens. Now you know exactly how that works!
+
+---
+
+**Project Type**: Compiler Design Assignment  
+**Phase**: Lexical Analysis (Phase 1)  
+**Status**: Completed ✅  
+
+For questions or suggestions, feel free to reach out to any team member!
 ```
 
 ### Example 2: Operators Test

@@ -5,45 +5,34 @@ namespace token {
 
 enum TokenType {
     // Keywords
-    If, Else, While, For, Do, Return,
-    Break, Continue, Switch, Case, Default,
-    Int, Float, Char, Double, Long, Short,
-    Void, Bool, Signed, Unsigned,
-    Const, Static, Struct, Enum, Typedef, Sizeof,
+    If, Else, While, For, Main,
+    
+    // Data Types
+    Int, Real, Char, Bool,
+    
+    // Boolean Values
     True, False,
-    Read, Print,
     
     // Identifiers and Literals
     Identifier,
-    IntLiteral, FloatLiteral, DoubleLiteral,
-    LongLiteral, LongLongLiteral,
-    StringLiteral, CharLiteral,
+    IntLiteral, RealLiteral,
+    CharLiteral,
     
     // Arithmetic Operators
     Plus, Minus, Multiply, Divide, Modulo,
-    Increment, Decrement,
     
     // Comparison Operators
     Equal, NotEqual,
     LessThan, GreaterThan,
     LessEqual, GreaterEqual,
     
-    // Logical Operators
-    LogicalAnd, LogicalOr, LogicalNot,
-    
-    // Bitwise Operators
-    BitwiseAnd, BitwiseOr, BitwiseXor, BitwiseNot,
-    LeftShift, RightShift,
-    
     // Assignment Operators
     Assign,
-    PlusAssign, MinusAssign, MultiplyAssign, DivideAssign, ModuloAssign,
     
     // Delimiters
-    Semicolon, Comma, Dot,
+    Semicolon, Comma,
     LeftParen, RightParen,
     LeftBrace, RightBrace,
-    LeftBracket, RightBracket,
     
     Unknown
 };
