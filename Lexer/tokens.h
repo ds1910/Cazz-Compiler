@@ -21,6 +21,9 @@ enum TokenType {
     // Arithmetic Operators
     Plus, Minus, Multiply, Divide, Modulo,
     
+    // Logical Operators
+    LogicalAnd, LogicalOr, LogicalNot,
+    
     // Comparison Operators
     Equal, NotEqual,
     LessThan, GreaterThan,

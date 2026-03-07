@@ -34,6 +34,11 @@ void printToken(token::TokenType t, const char* text = "") {
         case token::Divide: std::cout << "DIVIDE"; break;
         case token::Modulo: std::cout << "MODULO"; break;
         
+        // Logical Operators
+        case token::LogicalAnd: std::cout << "LOGICAL_AND"; break;
+        case token::LogicalOr: std::cout << "LOGICAL_OR"; break;
+        case token::LogicalNot: std::cout << "LOGICAL_NOT"; break;
+        
         // Comparison Operators
         case token::Equal: std::cout << "EQUAL"; break;
         case token::NotEqual: std::cout << "NOT_EQUAL"; break;
@@ -76,6 +81,10 @@ void printToken(token::TokenType t, const char* text = "") {
 
 "true"      { printToken(token::True); }
 "false"     { printToken(token::False); }
+
+"&&"        { printToken(token::LogicalAnd); }
+"||"        { printToken(token::LogicalOr); }
+"!"         { printToken(token::LogicalNot); }
 
 "=="        { printToken(token::Equal); }
 "!="        { printToken(token::NotEqual); }
